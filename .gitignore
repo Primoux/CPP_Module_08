@@ -1,0 +1,8 @@
+.build/
+easyfind
+span
+mutantstack
+*.o
+*.d
+compile_commands.json
+.cache/
