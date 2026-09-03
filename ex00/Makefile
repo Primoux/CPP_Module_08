@@ -14,7 +14,8 @@ OBJ_DIR			= .build/
 INCLUDE_DIR		= -Iinclude/
 INCLUDES 		= $(INCLUDE_DIR)
 
-SRCS			=	source/main.cpp
+SRCS			=	source/main.cpp \
+					source/easyfind.cpp
 
 
 OBJS			= $(patsubst %.cpp,$(OBJ_DIR)%.o,$(SRCS))
