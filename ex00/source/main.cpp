@@ -3,6 +3,7 @@
 #include <vector>
 #include <list>
 #include <deque>
+#include <iterator>
 #include "easyfind.hpp"
 #include "color.h"
 
@@ -52,8 +53,8 @@ void testList(void)
 	std::cout << BYELLOW "\n=== TEST 2: std::list ===" RESET << std::endl;
 	std::list<int> l;
 
-	l.push_back(42);
 	l.push_back(-7);
+	l.push_back(42);
 	l.push_back(42);
 	l.push_back(1000);
 	search(l, 42);
@@ -95,6 +96,16 @@ void testConst(void)
 	{
 		std::cout << BRED << e.what() << RESET << std::endl;
 	}
+	std::cout << "const std::vector, easyfind(223): ";
+	try
+	{
+		std::vector<int>::const_iterator it = easyfind(v, 223);
+		std::cout << LGREEN << "found " << *it << RESET << std::endl;
+	}
+	catch (std::exception const &e)
+	{
+		std::cout << BRED << e.what() << RESET << std::endl;
+	}
 }
 
 void testEmpty(void)
@@ -102,7 +113,15 @@ void testEmpty(void)
 	std::cout << BYELLOW "\n=== TEST 5: empty container ===" RESET << std::endl;
 	std::vector<int> v;
 
+	std::cout << "After creating an empty vector, searching for 0: ";
 	search(v, 0);
+	std::cout << "After adding 42 to the vector, searching for 42: ";
+	v.push_back(42);
+	search(v, 42);
+	std::cout << "After removing the first element, searching for 42: ";
+	v.erase(v.begin());
+	search(v, 42);
+
 }
 
 int main(int argc, char **argv)
