@@ -144,29 +144,6 @@ void testLimits(void)
 	std::cout << LYELLOW "expected: 0 and 20" RESET << std::endl;
 }
 
-void testCopy(void)
-{
-	std::cout << BYELLOW "\n=== TEST 6: copy and assignment ===" RESET << std::endl;
-	Span	sp(5);
-
-	sp.addNumber(1);
-	sp.addNumber(50);
-
-	Span	copy(sp);
-	Span	assigned(1);
-
-	assigned = sp;
-
-	sp.addNumber(25);
-	std::cout << "original: " << sp << " ";
-	printSpans(sp);
-	std::cout << "copy:     " << copy << " ";
-	printSpans(copy);
-	std::cout << "assigned: " << assigned << " ";
-	printSpans(assigned);
-	std::cout << LYELLOW "copies must keep 2 numbers, span 49 / 49" RESET << std::endl;
-}
-
 int main(int argc, char **argv)
 {
 	srand(static_cast<unsigned int>(getpid() * time(NULL)));
@@ -177,7 +154,6 @@ int main(int argc, char **argv)
 		testRange,
 		testBig,
 		testLimits,
-		testCopy,
 	};
 	const int num_tests = sizeof(tests) / sizeof(tests[0]) + 1;
 

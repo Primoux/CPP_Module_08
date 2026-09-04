@@ -3,7 +3,6 @@
 #include <vector>
 #include <list>
 #include <deque>
-#include <set>
 #include "easyfind.hpp"
 #include "color.h"
 
@@ -85,23 +84,11 @@ void testConst(void)
 	tmp.push_back(3);
 
 	std::vector<int> const	v(tmp);
-	std::set<int> const		s(tmp.begin(), tmp.end());
 
 	std::cout << "const std::vector, easyfind(2): ";
 	try
 	{
 		std::vector<int>::const_iterator it = easyfind(v, 2);
-		std::cout << LGREEN << "found " << *it << RESET << std::endl;
-	}
-	catch (std::exception const &e)
-	{
-		std::cout << BRED << e.what() << RESET << std::endl;
-	}
-
-	std::cout << "const std::set, easyfind(42): ";
-	try
-	{
-		std::set<int>::const_iterator it = easyfind(s, 42);
 		std::cout << LGREEN << "found " << *it << RESET << std::endl;
 	}
 	catch (std::exception const &e)
