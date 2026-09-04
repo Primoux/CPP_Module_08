@@ -144,6 +144,54 @@ void testLimits(void)
 	std::cout << LYELLOW "expected: 0 and 20" RESET << std::endl;
 }
 
+void testLargeSpan(void)
+{
+	std::cout << BYELLOW "\n=== TEST 6: big span ===" RESET << std::endl;
+	Span	sp(500000);
+
+	try
+	{
+		for (int i = 0; i < 500000; i++)
+			sp.addNumber(rand());
+		std::cout << sp << std::endl;
+		printSpans(sp);
+	}
+	catch(const std::exception& e)
+	{
+		std::cout << LGREEN << e.what() << RESET << std::endl;
+	}
+}
+
+void testOutRange(void)
+{
+	std::cout << BYELLOW "\n=== TEST 7: testOutRange int and iterators ===" RESET << std::endl;
+	std::vector<int>	v;
+
+	for (int i = 0; i < 5; i++)
+		v.push_back(i * 10);
+
+	Span	sp(8);
+
+	for (int i = 0; i < 5; i++)
+	{
+		sp.addNumber(rand() % 100);
+	}
+	std::cout << "span: " << sp << std::endl;
+	printSpans(sp);
+
+	std::cout << "range too big for the remaining space: ";
+	try
+	{
+		sp.addNumber(v.begin(), v.end());
+		std::cout << BRED "no exception thrown!" RESET << std::endl;
+	}
+	catch (std::exception const &e)
+	{
+		std::cout << LGREEN << e.what() << RESET << std::endl;
+	}
+	std::cout << "span is unchanged: " << sp << std::endl;
+}
+
 int main(int argc, char **argv)
 {
 	srand(static_cast<unsigned int>(getpid() * time(NULL)));
@@ -154,13 +202,15 @@ int main(int argc, char **argv)
 		testRange,
 		testBig,
 		testLimits,
+		testLargeSpan,
+		testOutRange,
 	};
-	const int num_tests = sizeof(tests) / sizeof(tests[0]) + 1;
+	const int num_tests = sizeof(tests) / sizeof(tests[0]);
 
 	if (argc == 1)
 	{
 		std::cout << BYELLOW "=== Running all tests ===" RESET << std::endl;
-		for (int i = 0; i < num_tests - 1; i++)
+		for (int i = 0; i < num_tests; i++)
 			tests[i]();
 		return 0;
 	}
@@ -169,10 +219,10 @@ int main(int argc, char **argv)
 	for (int i = 1; i < argc; i++)
 	{
 		int test_num = atoi(argv[i]);
-		if (test_num > 0 && test_num < num_tests)
+		if (test_num > 0 && test_num <= num_tests)
 			tests[test_num - 1]();
 		else
-			std::cerr << BRED "Unknown test: " RESET << test_num << std::endl;
+			std::cout << BRED "Unknown test: " RESET << test_num << std::endl;
 	}
 
 	return 0;

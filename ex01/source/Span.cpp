@@ -53,6 +53,8 @@ unsigned int Span::shortestSpan() const
 
 	long	shortest = static_cast<long>(sorted[1]) - static_cast<long>(sorted[0]);
 
+	if (shortest == 0)
+		return (0);
 	for (std::size_t i = 2; i < sorted.size(); i++)
 	{
 		long	span = static_cast<long>(sorted[i]) - static_cast<long>(sorted[i - 1]);

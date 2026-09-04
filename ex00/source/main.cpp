@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <unistd.h>
 #include <vector>
 #include <list>
 #include <deque>
@@ -17,14 +18,14 @@ void print(T const &container)
 }
 
 template <typename T>
-void search(T &container, int value)
+void search(T const &container, int value)
 {
 	std::cout << "easyfind(";
 	print(container);
 	std::cout << ", " << value << "): ";
 	try
 	{
-		typename T::iterator it = easyfind(container, value);
+		typename T::const_iterator it = easyfind(container, value);
 		std::cout << LGREEN << "found " << *it << RESET
 			<< " at index " << std::distance(container.begin(), it) << std::endl;
 	}
@@ -108,9 +109,37 @@ void testConst(void)
 	}
 }
 
+void testMutable(void)
+{
+	std::cout << BYELLOW "\n=== TEST 5: mutable container ===" RESET << std::endl;
+	std::vector<int> tmp;
+
+	tmp.push_back(1);
+	tmp.push_back(2);
+	tmp.push_back(3);
+
+	std::vector<int> 	v(tmp);
+
+	try
+	{
+		std::cout << "std::vector, easyfind(2): ";
+		std::vector<int>::iterator it = easyfind(v, 2);
+		std::cout << LGREEN << "found " << *it << RESET << std::endl;
+		(*it) = 42;
+		std::cout << "modified value: " << *it << std::endl;
+		std::cout << "std::vector, easyfind(42): ";
+		it = easyfind(v, 42);
+		std::cout << LGREEN << "found " << *it << RESET << std::endl;
+	}
+	catch (std::exception const &e)
+	{
+		std::cout << BRED << e.what() << RESET << std::endl;
+	}
+}
+
 void testEmpty(void)
 {
-	std::cout << BYELLOW "\n=== TEST 5: empty container ===" RESET << std::endl;
+	std::cout << BYELLOW "\n=== TEST 6: empty container ===" RESET << std::endl;
 	std::vector<int> v;
 
 	std::cout << "After creating an empty vector, searching for 0: ";
@@ -124,14 +153,17 @@ void testEmpty(void)
 
 }
 
+
 int main(int argc, char **argv)
 {
+	srand(getpid() / time(NULL));
 	typedef void (*test_func)(void);
 	static const test_func tests[] = {
 		testVector,
 		testList,
 		testDeque,
 		testConst,
+		testMutable,
 		testEmpty,
 	};
 	const int num_tests = sizeof(tests) / sizeof(tests[0]);
