@@ -6,3 +6,4 @@ mutantstack
 *.d
 compile_commands.json
 .cache/
+.vscode/
